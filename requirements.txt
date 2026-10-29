@@ -1,0 +1,7 @@
+streamlit>=1.39
+langchain-core>=0.3
+langchain-community>=0.3
+scikit-learn>=1.4
+# optional: used only when OPENAI_API_KEY is set (semantic search + LLM answers)
+langchain-openai>=0.2
+faiss-cpu>=1.8

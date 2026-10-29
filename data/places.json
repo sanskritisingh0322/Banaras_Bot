@@ -1,0 +1,251 @@
+[
+  {
+    "id": "dashashwamedh",
+    "category": "ghat",
+    "name": "Dashashwamedh Ghat",
+    "wiki": "Dashashwamedh Ghat",
+    "short": "Famous for the evening Ganga Aarti and lively atmosphere.",
+    "details": "Dashashwamedh Ghat is the most famous and busiest ghat of Varanasi, close to Kashi Vishwanath Temple. The grand Ganga Aarti is held every evening at sunset (about 6:30 PM in winter and 7:00 PM in summer). Arrive 45-60 minutes early for a good seat, or watch from a boat. Entry is free. Best time to visit: October to March."
+  },
+  {
+    "id": "assi",
+    "category": "ghat",
+    "name": "Assi Ghat",
+    "wiki": "Assi Ghat",
+    "short": "Best for morning vibes, yoga and a peaceful environment.",
+    "details": "Assi Ghat is the southernmost major ghat, where the Assi stream meets the Ganga. It is loved for sunrise views and the morning programme Subah-e-Banaras (around 5:30 AM) with Vedic chanting, yoga and music. It is popular with students from BHU, artists and travellers, with cafes nearby. Sunrise boat rides start here."
+  },
+  {
+    "id": "manikarnika",
+    "category": "ghat",
+    "name": "Manikarnika Ghat",
+    "wiki": "Manikarnika Ghat",
+    "short": "One of the oldest and most sacred ghats of Varanasi.",
+    "details": "Manikarnika Ghat is the main cremation ground of Varanasi. Hindus believe cremation here leads to moksha (liberation). It is a place of deep religious meaning: be respectful, do not photograph the pyres, and ignore touts asking for donations. It is about 300 m from Dashashwamedh Ghat and is best viewed quietly from a boat."
+  },
+  {
+    "id": "panchganga",
+    "category": "ghat",
+    "name": "Panchganga Ghat",
+    "wiki": "Ghats in Varanasi",
+    "short": "Known for its ancient temples and spiritual significance.",
+    "details": "Panchganga Ghat is believed to be where five rivers meet: Ganga, Yamuna, Saraswati, Kirana and Dhutapapa. Steep steps lead up to the Bindu Madhav temple and the Alamgir Mosque. It is less crowded and excellent for sunrise photography. In Kartik month lamps are lit on the Akash Deep pillar. It is about 1 km north of Dashashwamedh Ghat and lies between Manikarnika and Gai Ghat. Bathing here during Kartik month (October-November) is considered especially auspicious.",
+    "keyword": "Panchganga",
+    "image_query": "Panchganga Ghat Varanasi"
+  },
+  {
+    "id": "harishchandra",
+    "category": "ghat",
+    "name": "Harishchandra Ghat",
+    "wiki": "Ghats in Varanasi",
+    "short": "An ancient ghat named after the truthful King Harishchandra.",
+    "details": "Harishchandra Ghat is one of the oldest ghats, named after King Harishchandra who is said to have worked here at the cremation ground to keep his word alongside traditional pyres, and is quiet in the evenings.",
+    "keyword": "Harishchandra",
+    "image_query": "Harishchandra Ghat Varanasi"
+  },
+  {
+    "id": "scindia",
+    "category": "ghat",
+    "name": "Scindia Ghat",
+    "wiki": "Scindia Ghat",
+    "short": "Home of the half-submerged Ratneshwar Mahadev temple.",
+    "details": "Scindia Ghat lies next to Manikarnika Ghat. The leaning Ratneshwar Mahadev temple here stands partly submerged in the Ganga for much of the year. Narrow lanes lead from here to Kashi Vishwanath Temple and old havelis. Entry is free and the ghat is best seen from the river or in the morning when it is quiet."
+  },
+  {
+    "id": "tulsi",
+    "category": "ghat",
+    "name": "Tulsi Ghat",
+    "wiki": "Tulsi Ghat",
+    "short": "Where saint Tulsidas wrote the Ramcharitmanas.",
+    "details": "Tulsi Ghat is named after the poet-saint Tulsidas, who is said to have composed the Ramcharitmanas here. It hosts the Tulsi Ghat Ramlila and the Nag Nathaiya festival in the Kartik month. It is south of Assi Ghat's northern neighbours, near the Akhara of Hanuman."
+  },
+  {
+    "id": "kedar",
+    "category": "ghat",
+    "name": "Kedar Ghat",
+    "wiki": null,
+    "short": "A colourful southern ghat with the Kedareshwar temple.",
+    "details": "Kedar Ghat is a popular ghat with the Kedareshwar Temple, dedicated to Shiva, at the top of its steps. Pilgrims, especially from South India, visit it in large numbers. Its steps are painted in bright stripes, making it a favourite photography spot. Kedar Ghat is in the southern stretch near Harishchandra Ghat, about 2 km from Assi Ghat. The Gauri Kund here is believed to have healing waters, and the ghat is busiest during the month of Shravan. Best visited at sunrise; a boat from Assi Ghat takes about 15 minutes.",
+    "image_query": "Kedar Ghat Varanasi"
+  },
+  {
+    "id": "kashi_vishwanath",
+    "category": "temple",
+    "name": "Kashi Vishwanath Temple",
+    "wiki": "Kashi Vishwanath Temple",
+    "short": "The most revered Shiva temple, one of the 12 Jyotirlingas.",
+    "details": "Kashi Vishwanath Temple is dedicated to Shiva and holds one of the twelve Jyotirlingas. It is about 500 m from Dashashwamedh Ghat. The temple opens very early (around 3 AM for Mangala Aarti). The Kashi Vishwanath Corridor links the temple directly to the Ganga. Phones and bags are not allowed inside; use the lockers outside."
+  },
+  {
+    "id": "sankat_mochan",
+    "category": "temple",
+    "name": "Sankat Mochan Hanuman Temple",
+    "wiki": "Sankat Mochan Hanuman Temple",
+    "short": "Famous Hanuman temple founded by Tulsidas, near Assi.",
+    "details": "Sankat Mochan Temple is dedicated to Lord Hanuman and is said to have been founded by Tulsidas. It is near BHU and Assi Ghat. Tuesdays and Saturdays are the busiest days. Devotees offer laddoos and sindoor."
+  },
+  {
+    "id": "durga",
+    "category": "temple",
+    "name": "Durga Temple",
+    "wiki": "Durga Kund",
+    "short": "The 'Monkey Temple', a red 18th-century Durga shrine.",
+    "details": "Durga Temple, known as the Monkey Temple, is an 18th-century Nagara-style temple painted red, dedicated to Goddess Durga, in the Durgakund area. It is especially crowded during Navratri.",
+    "image_query": "Durga Temple Varanasi"
+  },
+  {
+    "id": "tulsi_manas",
+    "category": "temple",
+    "name": "Tulsi Manas Temple",
+    "wiki": "Tulsi Manas Temple",
+    "short": "Marble temple where Ramcharitmanas verses are carved on the walls.",
+    "details": "Tulsi Manas Temple, built in 1964 in white marble, is dedicated to Lord Rama and stands where Tulsidas is said to have written the Ramcharitmanas. Verses of the epic are engraved on its walls. It is close to Durga Temple."
+  },
+  {
+    "id": "kal_bhairav",
+    "category": "temple",
+    "name": "Kal Bhairav Temple",
+    "wiki": "Kaal Bhairav Temple",
+    "short": "The guardian deity (Kotwal) of Kashi.",
+    "details": "Kal Bhairav is considered the Kotwal (police chief) of Kashi, and it is believed that a visit to Kashi Vishwanath is incomplete without his darshan. The temple is near Visheshwargunj. Devotees offer sarso oil and flowers.",
+    "image_query": "Kaal Bhairav Temple Varanasi"
+  },
+  {
+    "id": "boat_rides",
+    "category": "boat",
+    "name": "Boat Rides on the Ganga",
+    "wiki": "Ghats in Varanasi",
+    "short": "Experience Varanasi from the river at sunrise or evening.",
+    "details": "A 1-hour sunrise or evening boat ride on the Ganga is the best way to see the ghats. Shared boats cost about Rs 300-500 per person; a private rowing boat costs about Rs 1,500-2,500 for up to 6-8 people (prices are approximate and negotiable). Board at Assi, Dashashwamedh or Rajendra Prasad Ghat. The classic route runs from Assi Ghat to Harishchandra, Manikarnika and Dashashwamedh. Evening rides to watch the Ganga Aarti from the water are very popular. Always agree the price and duration before boarding.",
+    "keyword": null,
+    "image_query": "Boats Ganges Varanasi"
+  },
+  {
+    "id": "ganga_aarti",
+    "category": "boat",
+    "name": "Ganga Aarti",
+    "wiki": "Ganga Aarti",
+    "short": "The nightly fire ritual of lamps, conch and chanting.",
+    "details": "The Ganga Aarti is performed every evening at sunset at Dashashwamedh Ghat (about 6:30 PM in winter and 7:00 PM in summer), and lasts around 45 minutes. It is free to attend. Sit on the steps early or watch from a boat. A quieter aarti happens at Assi Ghat, and Subah-e-Banaras takes place at sunrise.",
+    "image_query": "Ganga Aarti Varanasi Dashashwamedh"
+  },
+  {
+    "id": "kachori",
+    "category": "food",
+    "name": "Kachori Sabzi",
+    "wiki": "Kachori",
+    "short": "The classic Banarasi breakfast with spicy aloo sabzi and jalebi.",
+    "details": "Kachori-sabzi with jalebi is the classic Banarasi breakfast. Try it at the shops around Kachori Gali near Kashi Vishwanath, and in Godowlia and Lanka."
+  },
+  {
+    "id": "chaat",
+    "category": "food",
+    "name": "Banarasi Chaat",
+    "wiki": "Chaat",
+    "short": "Tamatar chaat, tikki and golgappe from old city shops.",
+    "details": "Banaras is famous for tamatar (tomato) chaat, aloo tikki and golgappa. Deena Chaat Bhandar near Godowlia is a well-known place. Eat at busy stalls and drink bottled water."
+  },
+  {
+    "id": "paan",
+    "category": "food",
+    "name": "Banarasi Paan",
+    "wiki": "Paan",
+    "short": "The legendary betel-leaf paan of Banaras.",
+    "details": "Banarasi paan uses the soft Banarasi (Magahi) leaf with sweet fillings such as gulkand and fennel. Paan shops are everywhere; the sweet 'meetha paan' is the safest choice for first-timers."
+  },
+  {
+    "id": "thandai",
+    "category": "food",
+    "name": "Thandai and Lassi",
+    "wiki": "Thandai",
+    "short": "Cooling milk-based drinks, malaiyo in winter, and thick lassi.",
+    "details": "Thandai is a cold milk drink with almonds, fennel and saffron. In winter, look for malaiyo, a light saffron milk foam sold in the morning. Blue Lassi near Manikarnika is famous for its thick fruit lassis."
+  },
+  {
+    "id": "airport",
+    "category": "reach",
+    "name": "By Air: Varanasi Airport",
+    "wiki": "Lal Bahadur Shastri International Airport",
+    "short": "About 25 km from the city, connected to major Indian cities.",
+    "details": "Lal Bahadur Shastri International Airport (VNS) is about 25 km from the city centre, around 45-60 minutes by taxi (Rs 800-1,200). It has direct flights to Delhi, Mumbai, Kolkata, Bengaluru and more."
+  },
+  {
+    "id": "train",
+    "category": "reach",
+    "name": "By Train: Varanasi Junction",
+    "wiki": "Varanasi Junction railway station",
+    "short": "The main station, well connected across India.",
+    "details": "Varanasi Junction (BSB) and Banaras / Manduadih (BSBS) are well connected to Delhi, Kolkata, Mumbai and Prayagraj. From the station take an auto or e-rickshaw to Godowlia (30-45 minutes, Rs 50-150). Vehicles cannot enter the narrow lanes near the ghats."
+  },
+  {
+    "id": "about_varanasi",
+    "category": "reach",
+    "name": "About Varanasi",
+    "wiki": "Varanasi",
+    "short": "One of the world's oldest living cities, on the Ganga.",
+    "details": "Varanasi, also called Kashi or Banaras, is one of the oldest continuously inhabited cities in the world. Kashi sirf ek shehar nahi, ek anubhav hai. The best months to visit are October to March. Roads from Delhi, Lucknow and Patna also reach the city by bus and car."
+  },
+  {
+    "id": "bhelpur_house",
+    "category": "house",
+    "name": "Sharma Niwas, Bhelpur",
+    "wiki": null,
+    "short": "Restored 19th-century haveli homestay in Bhelpur.",
+    "details": "Sharma Niwas is a restored 19th-century family haveli in the Bhelpur locality, about 3 km from Assi Ghat. It has a central courtyard, carved wooden balconies and 6 homestay rooms (about Rs 2,000-3,500 per night with home-cooked breakfast). The family arranges silk-weaving visits and boat rides. Landmark: near Bhelpur Chauraha, 10 minutes by e-rickshaw from Godowlia. (Sample data for demo.)",
+    "image_query": "Haveli Varanasi"
+  },
+  {
+    "id": "pandey_house",
+    "category": "house",
+    "name": "Pandey Bhawan, Kachori Gali",
+    "wiki": null,
+    "short": "Traditional Banarasi home near Kashi Vishwanath.",
+    "details": "Pandey Bhawan is a traditional multi-storey Banarasi house in the Kachori Gali locality, 400 m from Kashi Vishwanath Temple and about 600 m from Dashashwamedh Ghat. Guests can learn to make kachori and thandai with the family. It is reachable only on foot through narrow lanes; vehicles stop at Godowlia crossing. Rooms cost about Rs 1,500-2,500. (Sample data for demo.)",
+    "image_query": "Varanasi lane"
+  },
+  {
+    "id": "rajendra_prasad",
+    "category": "ghat",
+    "name": "Rajendra Prasad Ghat",
+    "wiki": null,
+    "image_query": "Rajendra Prasad Ghat Varanasi",
+    "short": "Next to Dashashwamedh, a calm spot with boat stands.",
+    "details": "Rajendra Prasad Ghat lies right beside Dashashwamedh Ghat and is the main point to hire boats for the Ganga Aarti view. It is named after India's first President, Dr Rajendra Prasad, and is less crowded, with a spot for Ganga Aarti from the river. Shared and private boats leave from here."
+  },
+  {
+    "id": "sarnath",
+    "category": "temple",
+    "name": "Sarnath",
+    "wiki": "Sarnath",
+    "image_query": "Dhamek Stupa Sarnath",
+    "short": "Where Buddha gave his first sermon, about 10 km from Varanasi.",
+    "details": "Sarnath is a major Buddhist site about 10 km from Varanasi, where Gautama Buddha gave his first sermon. Highlights are the Dhamek Stupa, the Ashoka Pillar remains, the Mulagandha Kuti Vihar and the Archaeological Museum (closed on Fridays). It takes about 30 minutes by auto from the city, and a half-day visit is enough."
+  },
+  {
+    "id": "bhu_vishwanath",
+    "category": "temple",
+    "name": "Shri Vishwanath Mandir (BHU)",
+    "wiki": "New Vishwanath Temple",
+    "image_query": "Vishwanath Temple BHU Varanasi",
+    "short": "The tall white-marble temple inside Banaras Hindu University.",
+    "details": "The Shri Vishwanath Mandir (New Vishwanath Temple) is inside the Banaras Hindu University campus, founded by Madan Mohan Malaviya. It is open to people of all faiths and is known for its quiet, clean surroundings. It is near Lanka and about 3 km from Assi Ghat."
+  },
+  {
+    "id": "bharat_mata",
+    "category": "temple",
+    "name": "Bharat Mata Mandir",
+    "wiki": "Bharat Mata Mandir",
+    "image_query": "Bharat Mata Mandir Varanasi",
+    "short": "A unique temple with a marble relief map of India.",
+    "details": "Bharat Mata Mandir, inaugurated by Mahatma Gandhi in 1936, has no deity but a large marble relief map of undivided India. It is on the Mahatma Gandhi Kashi Vidyapith campus, near Cantt station."
+  },
+  {
+    "id": "ramnagar_fort",
+    "category": "temple",
+    "name": "Ramnagar Fort",
+    "wiki": "Ramnagar Fort",
+    "image_query": "Ramnagar Fort Varanasi",
+    "short": "The 18th-century fort of the Kashi Naresh, across the river.",
+    "details": "Ramnagar Fort is an 18th-century fort across the Ganga from Assi Ghat, home of the Maharaja of Banaras. It has a museum of vintage cars, weapons and royal costumes. Reach it by boat or via the Ganga bridge; the Ramlila of Ramnagar is held here every year."
+  }
+]
