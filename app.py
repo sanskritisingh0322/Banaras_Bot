@@ -1,9 +1,4 @@
-"""Banaras Ghat Bot - Streamlit + LangChain + FAISS RAG over Wikipedia + local notes.
-
-Run:  streamlit run app.py
-Optional: set OPENAI_API_KEY for LLM-written answers (otherwise answers are
-built from the best-matching retrieved text, no key needed).
-"""
+"""Banaras Ghat Bot - Streamlit + LangChain + FAISS RAG over Wikipedia + local notes."""
 
 import html
 import json
@@ -20,7 +15,9 @@ import streamlit.components.v1 as components
 import wiki
 
 DATA = Path(__file__).parent / "data" / "places.json"
-CATEGORIES = [ # key, icon, title, subtitle, question for the chat
+
+# --- Data Setup ---
+CATEGORIES = [ 
     ("ghat", "🛕", "Famous Ghats", "Explore the most popular ghats", "Tell me about the famous ghats of Banaras"),
     ("temple", "🛕", "Temples", "Spiritual places near ghats", "Which temples should I visit in Varanasi?"),
     ("boat", "🛶", "Boat Rides", "Experience Varanasi from the river", "Tell me about boat rides and Ganga Aarti"),
@@ -37,11 +34,13 @@ FAQS = [
     ("Can I take photos at Manikarnika Ghat?", "Photography of cremations is not permitted and is disrespectful. View quietly from a boat."),
 ]
 
-# ------------------------------ Data ------------------------------
+# --- Cache & Data Loading ---
 @st.cache_data
 def load_data() -> list[dict]:
-    places = json.loads(DATA.read_text(encoding="utf-8"))
-    cache = wiki.build_cache(places)
+    with st.spinner("Varanasi ka data load ho raha hai... Please wait!"):
+        places = json.loads(DATA.read_text(encoding="utf-8"))
+        cache = wiki.build_cache(places)
+    
     fallback = cache.get("about_varanasi", {}).get("image", "")
     for p in places:
         w = cache.get(p["id"], {})
@@ -59,10 +58,9 @@ def by_id(pid: str) -> dict:
     return _index_by_id()[pid]
 
 def thumb(url: str, width: int) -> str:
-    """Smaller Wikimedia thumbnail = faster page load (standard sizes: 330, 500, 960)."""
     return re.sub(r"/\d+px-", f"/{width}px-", url) if "wikimedia.org" in url else url
 
-# ------------------------------ RAG ------------------------------
+# --- RAG Logic ---
 def chunk(text: str, size: int = 700) -> list[str]:
     out, cur = [], ""
     for para in text.split("\n\n"):
@@ -78,7 +76,6 @@ _INDEX = {}
 _LOCK = threading.Lock()
 
 def build_index():
-    """Build the retriever once per server process (thread-safe; also started in the background at launch)."""
     with _LOCK:
         if "r" not in _INDEX:
             _INDEX["r"] = _make_index()
@@ -90,17 +87,13 @@ def warm_up():
     return True
 
 def _make_index():
-    """LangChain retriever over the notes + Wikipedia chunks.
-    - With OPENAI_API_KEY: FAISS vector store with OpenAI embeddings (semantic search).
-    - Without a key: TF-IDF retriever (no model download, loads instantly, works on free hosting).
-    """
     from langchain_core.documents import Document
-
     docs = []
     for p in load_data():
         docs.append(Document(page_content=f"{p['name']}. {p['details']}", metadata={"id": p["id"], "src": "notes"}))
         for c in chunk(p["wiki_text"]):
             docs.append(Document(page_content=f"{p['name']}. {c}", metadata={"id": p["id"], "src": "wikipedia"}))
+            
     if os.getenv("OPENAI_API_KEY"):
         try:
             from langchain_community.vectorstores import FAISS
@@ -108,6 +101,7 @@ def _make_index():
             return FAISS.from_documents(docs, OpenAIEmbeddings(model="text-embedding-3-small"))
         except Exception:
             pass
+            
     from langchain_community.retrievers import TFIDFRetriever
     return TFIDFRetriever.from_documents(docs, k=8, tfidf_params={"ngram_range": (1, 2), "sublinear_tf": True, "stop_words": "english"})
 
@@ -119,7 +113,6 @@ def search(query: str, k: int = 6) -> list:
 STOP_WORDS = {"ghat", "temple", "mandir", "the", "of", "on", "ganga", "by", "varanasi", "bhavan", "niwas", "air", "train", "boat", "rides", "and", "about"}
 
 def match_place(q: str):
-    """Hinglish-friendly: if the question names a place, use it directly."""
     words = set(re.findall(r"[a-z]+", q.lower()))
     best, score = None, 0
     for p in load_data():
@@ -130,7 +123,6 @@ def match_place(q: str):
     return best
 
 def pick_place(q: str, hits: list) -> dict:
-    """Decide which place the question is about: named place > best curated-notes hit > best hit > overview."""
     named = match_place(q)
     if named:
         return named
@@ -173,7 +165,7 @@ def answer(query: str) -> dict:
     img = by_id("ganga_aarti")["image"] if "aarti" in q else top["image"]
     return {"role": "bot", "text": text, "image": img, "map": top["map"], "place": top["name"]}
 
-# ------------------------------ State / callbacks ------------------------------
+# --- State / Callbacks ---
 def init_state():
     st.session_state.setdefault("view", ("home",))
     st.session_state.setdefault("contacts", [])
@@ -211,7 +203,7 @@ def open_place(pid: str):
     go("place", pid)
     ask(f"Tell me about {by_id(pid)['name']}")
 
-# ------------------------------ UI ------------------------------
+# --- UI & CSS ---
 CSS = """
 <style>
 #MainMenu, footer, header[data-testid="stHeader"] {display:none;}
@@ -234,11 +226,10 @@ div[class*="st-key-cat"] button {width:100%; height:120px; border:none; border-r
 .card div {padding:10px; min-height:95px; font-size:.85rem; color:#555;}
 .card b {display:block; color:#14305a; font-size:1rem;}
 div[class*="st-key-view"] button, .st-key-send button {background:#14305a; color:#fff; border-radius:20px;}
-/* ---- chat window ---- */
+/* chat window */
 .st-key-chat {position:fixed; top:70px; right:20px; width:370px; max-width:calc(100vw - 20px); background:#fff;
     border-radius:16px; box-shadow:0 8px 30px rgba(0,0,0,.20); padding:0 !important; z-index:999; gap:0 !important;
     max-height:calc(100vh - 90px); overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;}
-/* the whole card scrolls; header stays on top and the input box stays at the bottom */
 div:has(> .st-key-chat_head), .st-key-chat_head {position:sticky; top:0; z-index:5;}
 div:has(> .st-key-chat_foot), .st-key-chat_foot {position:sticky; bottom:0; z-index:5; background:#fff;}
 .st-key-chat_head {background:#14305a; padding:10px 14px; border-radius:16px 16px 0 0;}
@@ -262,12 +253,10 @@ div:has(> .st-key-chat_foot), .st-key-chat_foot {position:sticky; bottom:0; z-in
 .st-key-launcher button p {font-size:34px !important; line-height:1 !important; margin:0; color:#fff;}
 .st-key-launcher button:hover {transform:scale(1.1); background:#14305a;}
 @keyframes pulse {0%{box-shadow:0 0 0 0 rgba(232,115,26,.6);} 70%{box-shadow:0 0 0 16px rgba(232,115,26,0);} 100%{box-shadow:0 0 0 0 rgba(232,115,26,0);}}
-/* keep chat rows side by side on every screen */
 .st-key-chat [data-testid="stHorizontalBlock"], .st-key-nav [data-testid="stHorizontalBlock"], .st-key-hero [data-testid="stHorizontalBlock"]
     {flex-wrap:wrap; gap:.4rem;}
 .st-key-chat [data-testid="stColumn"], .st-key-hero [data-testid="stColumn"] {min-width:0 !important;}
 .st-key-nav [data-testid="stColumn"] {min-width:auto !important; flex:1 1 auto !important; width:auto !important;}
-/* ---- tablet / phone ---- */
 @media (max-width: 900px) {
     .st-key-chat {top:0; right:0; left:0; bottom:0; width:100%; max-width:100%; max-height:100vh; height:100dvh; border-radius:0;}
     .st-key-chat_head {border-radius:0;}
@@ -314,8 +303,8 @@ def place_cards(places: list[dict], per_row: int = 4, prefix: str = "view"):
 
 def home_view():
     cols = st.columns(5)
+    # Yahan humne bug fix kiya hai
     for i, (col, cat) in enumerate(zip(cols, CATEGORIES)):
-        # cat variable ke andar category ki saari details hain, use alag kar rahe hain
         key, icon, title, sub, q = cat
         col.button(f"{icon}\n**{title}**\n{sub}", key=f"cat{i}", on_click=open_category, args=(key, q))
         
@@ -373,7 +362,7 @@ def contact_view():
                 st.warning("Please fill all fields.")
 
 def chatbot_interface():
-    if not st.session_state.chat_open: # floating logo on the right; click to open
+    if not st.session_state.chat_open:
         with st.container(key="launcher"):
             st.button("🤖", key="open_chat", on_click=set_chat, args=(True,), help="Chat with Banaras Ghat Bot")
         return
@@ -401,9 +390,6 @@ def chatbot_interface():
             c1, c2 = st.columns([5, 1])
             c1.text_input("m", key="chat_q", placeholder="Type your message...", label_visibility="collapsed", on_change=ask_from, args=("chat_q",))
             c2.button("➤", key="send", on_click=ask_from, args=("chat_q",))
-    # always show the newest message
-    # (scroll so the newest question sits at the top of the chat, with its answer below)
-    # the message count is put in the script so it changes on every new message and therefore re-runs
     components.html(
         f"<script>/* {len(st.session_state.messages)} */"
         "function go(){const d=window.parent.document;const chat=d.querySelector('.st-key-chat');"
@@ -421,7 +407,7 @@ def footer():
 
 def render_ui():
     st.markdown(CSS, unsafe_allow_html=True)
-    if st.session_state.chat_open: # leave room for the chat on wide screens only
+    if st.session_state.chat_open:
         st.markdown("<style>@media (min-width:901px){.st-key-body{margin-right:400px;}}</style>", unsafe_allow_html=True)
     header()
     hero()
