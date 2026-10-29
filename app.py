@@ -15,9 +15,7 @@ import streamlit.components.v1 as components
 import wiki
 
 DATA = Path(__file__).parent / "data" / "places.json"
-
-# --- Data Setup ---
-CATEGORIES = [ 
+CATEGORIES = [ # key, icon, title, subtitle, question for the chat
     ("ghat", "🛕", "Famous Ghats", "Explore the most popular ghats", "Tell me about the famous ghats of Banaras"),
     ("temple", "🛕", "Temples", "Spiritual places near ghats", "Which temples should I visit in Varanasi?"),
     ("boat", "🛶", "Boat Rides", "Experience Varanasi from the river", "Tell me about boat rides and Ganga Aarti"),
@@ -34,13 +32,11 @@ FAQS = [
     ("Can I take photos at Manikarnika Ghat?", "Photography of cremations is not permitted and is disrespectful. View quietly from a boat."),
 ]
 
-# --- Cache & Data Loading ---
+# ------------------------------ Data ------------------------------
 @st.cache_data
 def load_data() -> list[dict]:
-    with st.spinner("Varanasi ka data load ho raha hai... Please wait!"):
-        places = json.loads(DATA.read_text(encoding="utf-8"))
-        cache = wiki.build_cache(places)
-    
+    places = json.loads(DATA.read_text(encoding="utf-8"))
+    cache = wiki.build_cache(places)
     fallback = cache.get("about_varanasi", {}).get("image", "")
     for p in places:
         w = cache.get(p["id"], {})
@@ -60,7 +56,7 @@ def by_id(pid: str) -> dict:
 def thumb(url: str, width: int) -> str:
     return re.sub(r"/\d+px-", f"/{width}px-", url) if "wikimedia.org" in url else url
 
-# --- RAG Logic ---
+# ------------------------------ RAG ------------------------------
 def chunk(text: str, size: int = 700) -> list[str]:
     out, cur = [], ""
     for para in text.split("\n\n"):
@@ -93,7 +89,6 @@ def _make_index():
         docs.append(Document(page_content=f"{p['name']}. {p['details']}", metadata={"id": p["id"], "src": "notes"}))
         for c in chunk(p["wiki_text"]):
             docs.append(Document(page_content=f"{p['name']}. {c}", metadata={"id": p["id"], "src": "wikipedia"}))
-            
     if os.getenv("OPENAI_API_KEY"):
         try:
             from langchain_community.vectorstores import FAISS
@@ -101,7 +96,6 @@ def _make_index():
             return FAISS.from_documents(docs, OpenAIEmbeddings(model="text-embedding-3-small"))
         except Exception:
             pass
-            
     from langchain_community.retrievers import TFIDFRetriever
     return TFIDFRetriever.from_documents(docs, k=8, tfidf_params={"ngram_range": (1, 2), "sublinear_tf": True, "stop_words": "english"})
 
@@ -165,7 +159,7 @@ def answer(query: str) -> dict:
     img = by_id("ganga_aarti")["image"] if "aarti" in q else top["image"]
     return {"role": "bot", "text": text, "image": img, "map": top["map"], "place": top["name"]}
 
-# --- State / Callbacks ---
+# ------------------------------ State / callbacks ------------------------------
 def init_state():
     st.session_state.setdefault("view", ("home",))
     st.session_state.setdefault("contacts", [])
@@ -203,60 +197,91 @@ def open_place(pid: str):
     go("place", pid)
     ask(f"Tell me about {by_id(pid)['name']}")
 
-# --- UI & CSS ---
+# ------------------------------ UI ------------------------------
 CSS = """
 <style>
+/* Force white background & black text for main page */
+.stApp, [data-testid="stAppViewContainer"], .main { background-color: #ffffff !important; }
+.st-key-body, .st-key-body p, .st-key-body span, .st-key-body div { color: #111111 !important; }
+
+/* Hide Streamlit Defaults */
 #MainMenu, footer, header[data-testid="stHeader"] {display:none;}
 .block-container {padding:0 !important; max-width:100% !important;}
+
+/* Navigation */
 .st-key-nav {background:#fdf6ee; padding:10px 40px;}
-.st-key-nav button {background:transparent; border:none; color:#333; box-shadow:none;}
-.st-key-nav button:hover {color:#e8731a;}
-.brand b {font-size:22px; color:#14305a; font-family:Georgia,serif;} .brand small {display:block; color:#14305a;}
+.st-key-nav button {background:transparent; border:none; color:#333 !important; box-shadow:none;}
+.st-key-nav button:hover {color:#e8731a !important;}
+.brand b {font-size:22px; color:#14305a !important; font-family:Georgia,serif;} 
+.brand small {display:block; color:#14305a !important;}
+
+/* Hero Section (Keep Text White) */
 .st-key-hero {background-size:cover !important; background-position:center !important; padding:50px 40px 40px; min-height:250px;}
-.st-key-hero h1 {color:#fff; font-family:Georgia,serif; font-size:2.8rem; margin:0; text-shadow:0 2px 6px #0008;}
-.st-key-hero p, .st-key-hero small {color:#fff; text-shadow:0 1px 4px #0008;}
-.st-key-hero input {border-radius:30px; padding:14px 20px;}
-.st-key-body {padding:10px 40px;}
-h3.t {font-family:Georgia,serif; color:#14305a; margin:20px 0 10px;}
-div[class*="st-key-cat"] button {width:100%; height:120px; border:none; border-radius:12px; white-space:pre-line; color:#222;}
+.st-key-hero h1 {color:#fff !important; font-family:Georgia,serif; font-size:2.8rem; margin:0; text-shadow:0 2px 6px #0008;}
+.st-key-hero p, .st-key-hero small {color:#fff !important; text-shadow:0 1px 4px #0008;}
+.st-key-hero input {border-radius:30px; padding:14px 20px; color: #111111 !important;}
+
+/* Body */
+.st-key-body {padding:10px 40px; background-color: #ffffff !important;}
+h3.t {font-family:Georgia,serif; color:#14305a !important; margin:20px 0 10px;}
+
+/* Category Cards */
+div[class*="st-key-cat"] button {width:100%; height:120px; border:none; border-radius:12px; white-space:pre-line; color:#222 !important;}
 .st-key-cat0 button {background:#fbe5dc;} .st-key-cat1 button {background:#f0ebd3;}
 .st-key-cat2 button {background:#e1ecf8;} .st-key-cat3 button {background:#dff1e5;} .st-key-cat4 button {background:#e9e4f6;}
-.card {background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.1);}
+
+/* Place Cards */
+.card {background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.1); border: 1px solid #eee;}
 .card img {width:100%; height:120px; object-fit:cover;}
-.card div {padding:10px; min-height:95px; font-size:.85rem; color:#555;}
-.card b {display:block; color:#14305a; font-size:1rem;}
-div[class*="st-key-view"] button, .st-key-send button {background:#14305a; color:#fff; border-radius:20px;}
-/* chat window */
+.card div {padding:10px; min-height:95px; font-size:.85rem; color:#555 !important; background:#fff !important;}
+.card b {display:block; color:#14305a !important; font-size:1rem;}
+
+/* Buttons (Fix for invisible text) */
+div[class*="st-key-view"] button, .st-key-send button {background:#14305a !important; color:#fff !important; border-radius:20px;}
+div[class*="st-key-view"] button p, .st-key-send button p, .st-key-hero_go button p { color: #ffffff !important; }
+
+/* Chat Window */
 .st-key-chat {position:fixed; top:70px; right:20px; width:370px; max-width:calc(100vw - 20px); background:#fff;
     border-radius:16px; box-shadow:0 8px 30px rgba(0,0,0,.20); padding:0 !important; z-index:999; gap:0 !important;
     max-height:calc(100vh - 90px); overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;}
 div:has(> .st-key-chat_head), .st-key-chat_head {position:sticky; top:0; z-index:5;}
-div:has(> .st-key-chat_foot), .st-key-chat_foot {position:sticky; bottom:0; z-index:5; background:#fff;}
-.st-key-chat_head {background:#14305a; padding:10px 14px; border-radius:16px 16px 0 0;}
-.st-key-chat_head, .st-key-chat_head * {color:#fff;}
+div:has(> .st-key-chat_foot), .st-key-chat_foot {position:sticky; bottom:0; z-index:5; background:#fff !important;}
+
+/* Chat Header */
+.st-key-chat_head {background:#14305a !important; padding:10px 14px; border-radius:16px 16px 0 0;}
+.st-key-chat_head, .st-key-chat_head * {color:#fff !important;}
 .st-key-chat_head p {margin:0; line-height:1.3;}
-.st-key-chat_head button {background:rgba(255,255,255,.15); border:none; border-radius:50%; width:34px; height:34px; min-height:0; padding:0;}
+.st-key-chat_head button {background:rgba(255,255,255,.15); border:none; border-radius:50%; width:34px; height:34px; min-height:0; padding:0; color:#fff !important;}
 .st-key-chat_head button:hover {background:#e8731a;}
+
+/* Chat Messages */
 .st-key-msgs {min-height:150px; padding:12px; background:#fdf8f2;}
 .st-key-msgs img {max-height:220px; object-fit:cover; border-radius:10px;}
 .st-key-msgs [data-testid="stChatMessage"] {background:#fff; border:1px solid #eee; border-radius:14px; padding:8px 10px; margin-bottom:8px; font-size:.9rem;}
-.st-key-msgs [data-testid="stChatMessage"] p, .st-key-msgs li {font-size:.9rem; line-height:1.45;}
+.st-key-msgs [data-testid="stChatMessage"] p, .st-key-msgs li {font-size:.9rem; line-height:1.45; color: #111111 !important;}
+
 .st-key-chat_foot {padding:8px 12px 12px; border-top:1px solid #eee;}
-.online {color:#7df0b0; font-size:.75rem;}
-.me {scroll-margin-top:70px; background:#14305a; color:#fff; padding:8px 12px; border-radius:14px 14px 2px 14px; margin:6px 0 8px 36px; font-size:.9rem;}
+.online {color:#7df0b0 !important; font-size:.75rem;}
+.me {scroll-margin-top:70px; background:#14305a !important; color:#fff !important; padding:8px 12px; border-radius:14px 14px 2px 14px; margin:6px 0 8px 36px; font-size:.9rem;}
+
+/* Chat Launcher */
 .st-key-launcher {position:fixed !important; right:20px !important; bottom:20px !important; left:auto !important; top:auto !important;
     width:68px !important; height:68px !important; z-index:9999; overflow:visible;}
 .st-key-launcher [data-testid="stButton"] {width:68px !important; height:68px;}
 .st-key-launcher button {width:68px !important; height:68px !important; min-height:68px !important; border-radius:50% !important; padding:0 !important;
-    background:radial-gradient(circle at 30% 30%, #ff9a3c, #e8731a 60%, #b8520c); border:3px solid #fff;
-    box-shadow:0 6px 20px rgba(20,48,90,.5); animation:pulse 2.2s infinite;}
-.st-key-launcher button p {font-size:34px !important; line-height:1 !important; margin:0; color:#fff;}
-.st-key-launcher button:hover {transform:scale(1.1); background:#14305a;}
+    background:radial-gradient(circle at 30% 30%, #ff9a3c, #e8731a 60%, #b8520c) !important; border:3px solid #fff !important;
+    box-shadow:0 6px 20px rgba(20,48,90,.5) !important; animation:pulse 2.2s infinite;}
+.st-key-launcher button p {font-size:34px !important; line-height:1 !important; margin:0; color:#fff !important;}
+.st-key-launcher button:hover {transform:scale(1.1); background:#14305a !important;}
 @keyframes pulse {0%{box-shadow:0 0 0 0 rgba(232,115,26,.6);} 70%{box-shadow:0 0 0 16px rgba(232,115,26,0);} 100%{box-shadow:0 0 0 0 rgba(232,115,26,0);}}
+
+/* Layout Fixes */
 .st-key-chat [data-testid="stHorizontalBlock"], .st-key-nav [data-testid="stHorizontalBlock"], .st-key-hero [data-testid="stHorizontalBlock"]
     {flex-wrap:wrap; gap:.4rem;}
 .st-key-chat [data-testid="stColumn"], .st-key-hero [data-testid="stColumn"] {min-width:0 !important;}
 .st-key-nav [data-testid="stColumn"] {min-width:auto !important; flex:1 1 auto !important; width:auto !important;}
+
+/* Tablet / Phone */
 @media (max-width: 900px) {
     .st-key-chat {top:0; right:0; left:0; bottom:0; width:100%; max-width:100%; max-height:100vh; height:100dvh; border-radius:0;}
     .st-key-chat_head {border-radius:0;}
@@ -268,9 +293,14 @@ div:has(> .st-key-chat_foot), .st-key-chat_foot {position:sticky; bottom:0; z-in
     .foot {flex-direction:column; gap:8px; text-align:center; padding:18px;}
     .st-key-launcher {right:14px !important; bottom:14px !important;}
 }
-div[class*="st-key-pill"] button {width:100%; min-height:44px; line-height:1.2; border-radius:16px; font-size:.75rem; background:#eaf1fb; color:#14305a; border:none; padding:8px 10px;}
-.foot {background:#14305a; color:#fff; display:flex; justify-content:space-between; padding:22px 40px; margin-top:30px;}
-.foot a {color:#fff; margin:0 6px;}
+
+/* Suggestion Pills */
+div[class*="st-key-pill"] button {width:100%; min-height:44px; line-height:1.2; border-radius:16px; font-size:.75rem; background:#eaf1fb !important; color:#14305a !important; border:none; padding:8px 10px;}
+div[class*="st-key-pill"] button p { color: #14305a !important; }
+
+/* Footer */
+.foot {background:#14305a !important; color:#fff !important; display:flex; justify-content:space-between; padding:22px 40px; margin-top:30px;}
+.foot a, .foot b, .foot i, .foot span {color:#fff !important; margin:0 6px; text-decoration: none;}
 </style>
 """
 
@@ -303,11 +333,10 @@ def place_cards(places: list[dict], per_row: int = 4, prefix: str = "view"):
 
 def home_view():
     cols = st.columns(5)
-    # Yahan humne bug fix kiya hai
+    # Bug fix for original code
     for i, (col, cat) in enumerate(zip(cols, CATEGORIES)):
         key, icon, title, sub, q = cat
         col.button(f"{icon}\n**{title}**\n{sub}", key=f"cat{i}", on_click=open_category, args=(key, q))
-        
     c1, c2 = st.columns([6, 1])
     c1.markdown("<h3 class='t'>Popular Ghats</h3>", unsafe_allow_html=True)
     c2.button("View All →", key="viewall", on_click=open_category, args=("ghat", CATEGORIES[0][4]))
